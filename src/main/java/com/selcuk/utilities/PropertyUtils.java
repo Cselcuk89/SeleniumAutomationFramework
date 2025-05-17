@@ -2,6 +2,7 @@ package com.selcuk.utilities;
 
 import com.selcuk.constants.ProjectConstants;
 import com.selcuk.enums.ConfigProperties;
+import com.selcuk.frameworkExceptions.PropertyFileUsageException;
 
 import java.io.FileInputStream;
 import java.io.IOException;

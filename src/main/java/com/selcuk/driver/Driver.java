@@ -1,6 +1,7 @@
 package com.selcuk.driver;
 
 import com.selcuk.enums.ConfigProperties;
+import com.selcuk.frameworkExceptions.BrowserInvocationFailedException;
 import com.selcuk.projectFactories.DriverFactory;
 import com.selcuk.utilities.PropertyUtils;
 
