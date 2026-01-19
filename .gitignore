@@ -1,0 +1,79 @@
+# Build output
+target/
+build/
+out/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+*.swp
+*.swo
+.vscode/
+*.sublime-*
+.attach_pid*
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Log files
+logs/
+*.log
+
+# Test output
+extent-test-output/
+allure-results/
+allure-report/
+test-output/
+screenshots/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*~
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+gradle.properties
+local.properties
+
+# Package files
+node_modules/
+bower_components/
+
+# Temporary files
+tmp/
+temp/
+*.bak
+*.old
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Driver executables
+*.exe
+chromedriver
+geckodriver
+msedgedriver
