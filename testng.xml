@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SauceDemo Automation Suite" verbose="2" parallel="false">
+    
+    <!-- Listeners -->
+    <listeners>
+        <listener class-name="com.selcuk.projectListeners.ProjectListenerClass"/>
+        <listener class-name="com.selcuk.projectListeners.AnnotationTransformer"/>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+    
+    <!-- Smoke Test Suite -->
+    <test name="Smoke Tests" enabled="true">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.selcuk.tests.saucedemo"/>
+        </packages>
+    </test>
+    
+    <!-- Regression Test Suite -->
+    <test name="Regression Tests" enabled="true">
+        <classes>
+            <class name="com.selcuk.tests.saucedemo.LoginTest"/>
+            <class name="com.selcuk.tests.saucedemo.InventoryTest"/>
+            <class name="com.selcuk.tests.saucedemo.CartTest"/>
+            <class name="com.selcuk.tests.saucedemo.CheckoutTest"/>
+        </classes>
+    </test>
+    
+    <!-- Individual Module Tests -->
+    <test name="Login Module Tests" enabled="false">
+        <classes>
+            <class name="com.selcuk.tests.saucedemo.LoginTest"/>
+        </classes>
+    </test>
+    
+    <test name="Inventory Module Tests" enabled="false">
+        <classes>
+            <class name="com.selcuk.tests.saucedemo.InventoryTest"/>
+        </classes>
+    </test>
+    
+    <test name="Cart Module Tests" enabled="false">
+        <classes>
+            <class name="com.selcuk.tests.saucedemo.CartTest"/>
+        </classes>
+    </test>
+    
+    <test name="Checkout Module Tests" enabled="false">
+        <classes>
+            <class name="com.selcuk.tests.saucedemo.CheckoutTest"/>
+        </classes>
+    </test>
+    
+</suite>
