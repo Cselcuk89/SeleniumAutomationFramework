@@ -4,6 +4,7 @@ import com.selcuk.annotations.FrameworkAnnotation;
 import com.selcuk.enums.CategoryType;
 import com.selcuk.projectPages.saucedemo.*;
 import com.selcuk.tests.BaseTest;
+import com.selcuk.tests.TestData;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeMethod;
@@ -38,7 +39,7 @@ public class CheckoutTest extends BaseTest {
         log.info("Starting complete checkout flow test");
         
         // Add product to cart
-        inventoryPage.addProductToCart("Sauce Labs Backpack");
+        inventoryPage.addProductToCart(TestData.PRODUCT_BACKPACK);
         
         // Navigate to cart
         CartPage cartPage = inventoryPage.openCart();
@@ -51,7 +52,10 @@ public class CheckoutTest extends BaseTest {
                 .isTrue();
         
         // Fill checkout info
-        checkoutPage.completeStepOne("John", "Doe", "12345");
+        checkoutPage.completeStepOne(
+                TestData.CHECKOUT_FIRST_NAME, 
+                TestData.CHECKOUT_LAST_NAME, 
+                TestData.CHECKOUT_POSTAL_CODE);
         assertThat(checkoutPage.isOnCheckoutStepTwo())
                 .as("Should be on checkout step two")
                 .isTrue();
@@ -75,7 +79,7 @@ public class CheckoutTest extends BaseTest {
         
         assertThat(checkoutPage.getCompleteHeader())
                 .as("Should display thank you message")
-                .contains("Thank you");
+                .contains(TestData.ORDER_COMPLETE_MESSAGE);
         
         log.info("Complete checkout flow test completed");
     }
@@ -95,8 +99,8 @@ public class CheckoutTest extends BaseTest {
         
         // Try to continue without first name
         checkoutPage
-                .enterLastName("Doe")
-                .enterPostalCode("12345")
+                .enterLastName(TestData.CHECKOUT_LAST_NAME)
+                .enterPostalCode(TestData.CHECKOUT_POSTAL_CODE)
                 .clickContinueExpectingError();
         
         // Verify error
@@ -106,7 +110,7 @@ public class CheckoutTest extends BaseTest {
         
         assertThat(checkoutPage.getErrorMessage())
                 .as("Error should indicate first name is required")
-                .contains("First Name is required");
+                .contains(TestData.ERROR_FIRST_NAME_REQUIRED);
         
         log.info("Checkout missing first name test completed");
     }
@@ -126,8 +130,8 @@ public class CheckoutTest extends BaseTest {
         
         // Try to continue without last name
         checkoutPage
-                .enterFirstName("John")
-                .enterPostalCode("12345")
+                .enterFirstName(TestData.CHECKOUT_FIRST_NAME)
+                .enterPostalCode(TestData.CHECKOUT_POSTAL_CODE)
                 .clickContinueExpectingError();
         
         // Verify error
@@ -137,7 +141,7 @@ public class CheckoutTest extends BaseTest {
         
         assertThat(checkoutPage.getErrorMessage())
                 .as("Error should indicate last name is required")
-                .contains("Last Name is required");
+                .contains(TestData.ERROR_LAST_NAME_REQUIRED);
         
         log.info("Checkout missing last name test completed");
     }
@@ -157,8 +161,8 @@ public class CheckoutTest extends BaseTest {
         
         // Try to continue without postal code
         checkoutPage
-                .enterFirstName("John")
-                .enterLastName("Doe")
+                .enterFirstName(TestData.CHECKOUT_FIRST_NAME)
+                .enterLastName(TestData.CHECKOUT_LAST_NAME)
                 .clickContinueExpectingError();
         
         // Verify error
@@ -168,7 +172,7 @@ public class CheckoutTest extends BaseTest {
         
         assertThat(checkoutPage.getErrorMessage())
                 .as("Error should indicate postal code is required")
-                .contains("Postal Code is required");
+                .contains(TestData.ERROR_POSTAL_CODE_REQUIRED);
         
         log.info("Checkout missing postal code test completed");
     }
@@ -207,9 +211,9 @@ public class CheckoutTest extends BaseTest {
         
         // Add multiple products
         inventoryPage
-                .addProductToCart("Sauce Labs Backpack")
-                .addProductToCart("Sauce Labs Bike Light")
-                .addProductToCart("Sauce Labs Bolt T-Shirt");
+                .addProductToCart(TestData.PRODUCT_BACKPACK)
+                .addProductToCart(TestData.PRODUCT_BIKE_LIGHT)
+                .addProductToCart(TestData.PRODUCT_BOLT_TSHIRT);
         
         // Navigate to cart
         CartPage cartPage = inventoryPage.openCart();
@@ -220,7 +224,10 @@ public class CheckoutTest extends BaseTest {
         
         // Proceed to checkout
         CheckoutPage checkoutPage = cartPage.proceedToCheckout();
-        checkoutPage.completeStepOne("John", "Doe", "12345");
+        checkoutPage.completeStepOne(
+                TestData.CHECKOUT_FIRST_NAME, 
+                TestData.CHECKOUT_LAST_NAME, 
+                TestData.CHECKOUT_POSTAL_CODE);
         
         // Verify total on checkout page (should include tax)
         double checkoutTotal = checkoutPage.getTotalAsDouble();
@@ -251,7 +258,10 @@ public class CheckoutTest extends BaseTest {
         inventoryPage.addFirstProductToCart();
         CartPage cartPage = inventoryPage.openCart();
         CheckoutPage checkoutPage = cartPage.proceedToCheckout();
-        checkoutPage.completeStepOne("John", "Doe", "12345");
+        checkoutPage.completeStepOne(
+                TestData.CHECKOUT_FIRST_NAME, 
+                TestData.CHECKOUT_LAST_NAME, 
+                TestData.CHECKOUT_POSTAL_CODE);
         checkoutPage.finishCheckout();
         
         // Return to products

@@ -71,6 +71,12 @@ public final class ExplicitWaitFactory {
     }
     
     /**
+     * Default wait function if strategy is not found.
+     */
+    private static final Function<By, WebElement> DEFAULT_WAIT = by -> 
+        createWait().until(ExpectedConditions.presenceOfElementLocated(by));
+    
+    /**
      * Performs explicit wait based on the given strategy.
      *
      * @param waitStrategy Strategy to use
@@ -79,9 +85,12 @@ public final class ExplicitWaitFactory {
      */
     public static WebElement performExplicitWaitMethod(WaitStrategy waitStrategy, By by) {
         log.trace("Waiting for element with strategy: {} - {}", waitStrategy, by);
-        return WAIT_STRATEGIES
-                .getOrDefault(waitStrategy, WAIT_STRATEGIES.get(WaitStrategy.PRESENCE))
-                .apply(by);
+        Function<By, WebElement> waitFunction = WAIT_STRATEGIES.get(waitStrategy);
+        if (waitFunction == null) {
+            log.warn("Unknown wait strategy: {}, using default PRESENCE strategy", waitStrategy);
+            waitFunction = DEFAULT_WAIT;
+        }
+        return waitFunction.apply(by);
     }
     
     /**

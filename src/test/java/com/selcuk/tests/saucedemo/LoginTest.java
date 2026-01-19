@@ -5,6 +5,7 @@ import com.selcuk.enums.CategoryType;
 import com.selcuk.projectPages.saucedemo.InventoryPage;
 import com.selcuk.projectPages.saucedemo.LoginPage;
 import com.selcuk.tests.BaseTest;
+import com.selcuk.tests.TestData;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
@@ -45,7 +46,7 @@ public class LoginTest extends BaseTest {
         
         assertThat(inventoryPage.getProductsTitle())
                 .as("Products title should be displayed")
-                .isEqualTo("Products");
+                .isEqualTo(TestData.PAGE_TITLE_PRODUCTS);
         
         log.info("Successful login test completed");
     }
@@ -70,7 +71,7 @@ public class LoginTest extends BaseTest {
         
         assertThat(loginPage.getErrorMessage())
                 .as("Error message should indicate user is locked out")
-                .contains("locked out");
+                .contains(TestData.ERROR_LOCKED_OUT);
         
         log.info("Locked out user login test completed");
     }
@@ -86,7 +87,7 @@ public class LoginTest extends BaseTest {
         LoginPage loginPage = new LoginPage();
         
         // Attempt login with invalid credentials
-        loginPage.loginExpectingError("invalid_user", "invalid_password");
+        loginPage.loginExpectingError(TestData.INVALID_USERNAME, TestData.INVALID_PASSWORD);
         
         // Verify error message
         assertThat(loginPage.isErrorDisplayed())
@@ -95,7 +96,7 @@ public class LoginTest extends BaseTest {
         
         assertThat(loginPage.getErrorMessage())
                 .as("Error message should indicate invalid credentials")
-                .contains("Username and password do not match");
+                .contains(TestData.ERROR_INVALID_CREDENTIALS);
         
         log.info("Invalid credentials login test completed");
     }
@@ -121,7 +122,7 @@ public class LoginTest extends BaseTest {
         
         assertThat(loginPage.getErrorMessage())
                 .as("Error message should indicate username is required")
-                .contains("Username is required");
+                .contains(TestData.ERROR_USERNAME_REQUIRED);
         
         log.info("Empty username login test completed");
     }
@@ -147,7 +148,7 @@ public class LoginTest extends BaseTest {
         
         assertThat(loginPage.getErrorMessage())
                 .as("Error message should indicate password is required")
-                .contains("Password is required");
+                .contains(TestData.ERROR_PASSWORD_REQUIRED);
         
         log.info("Empty password login test completed");
     }

@@ -6,6 +6,7 @@ import com.selcuk.projectPages.saucedemo.CartPage;
 import com.selcuk.projectPages.saucedemo.InventoryPage;
 import com.selcuk.projectPages.saucedemo.LoginPage;
 import com.selcuk.tests.BaseTest;
+import com.selcuk.tests.TestData;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeMethod;
@@ -41,10 +42,8 @@ public class CartTest extends BaseTest {
     public void testCartPageDisplay() {
         log.info("Starting cart page display test");
         
-        String productName = "Sauce Labs Backpack";
-        
         // Add product and navigate to cart
-        inventoryPage.addProductToCart(productName);
+        inventoryPage.addProductToCart(TestData.PRODUCT_BACKPACK);
         CartPage cartPage = inventoryPage.openCart();
         
         // Verify on cart page
@@ -54,7 +53,7 @@ public class CartTest extends BaseTest {
         
         assertThat(cartPage.getCartTitle())
                 .as("Cart title should be displayed")
-                .isEqualTo("Your Cart");
+                .isEqualTo(TestData.PAGE_TITLE_CART);
         
         log.info("Cart page display test completed");
     }
@@ -67,13 +66,10 @@ public class CartTest extends BaseTest {
     public void testCartContainsAddedProducts() {
         log.info("Starting cart contains added products test");
         
-        String product1 = "Sauce Labs Backpack";
-        String product2 = "Sauce Labs Bike Light";
-        
         // Add products
         inventoryPage
-                .addProductToCart(product1)
-                .addProductToCart(product2);
+                .addProductToCart(TestData.PRODUCT_BACKPACK)
+                .addProductToCart(TestData.PRODUCT_BIKE_LIGHT);
         
         // Navigate to cart
         CartPage cartPage = inventoryPage.openCart();
@@ -82,7 +78,7 @@ public class CartTest extends BaseTest {
         List<String> cartProducts = cartPage.getCartProductNames();
         assertThat(cartProducts)
                 .as("Cart should contain added products")
-                .containsExactlyInAnyOrder(product1, product2);
+                .containsExactlyInAnyOrder(TestData.PRODUCT_BACKPACK, TestData.PRODUCT_BIKE_LIGHT);
         
         assertThat(cartPage.getCartItemCount())
                 .as("Cart should have 2 items")
@@ -99,28 +95,25 @@ public class CartTest extends BaseTest {
     public void testRemoveItemFromCart() {
         log.info("Starting remove item from cart test");
         
-        String product1 = "Sauce Labs Backpack";
-        String product2 = "Sauce Labs Bike Light";
-        
         // Add products and navigate to cart
         inventoryPage
-                .addProductToCart(product1)
-                .addProductToCart(product2);
+                .addProductToCart(TestData.PRODUCT_BACKPACK)
+                .addProductToCart(TestData.PRODUCT_BIKE_LIGHT);
         CartPage cartPage = inventoryPage.openCart();
         
         // Remove one product
-        cartPage.removeItem(product1);
+        cartPage.removeItem(TestData.PRODUCT_BACKPACK);
         
         // Verify cart
         assertThat(cartPage.getCartItemCount())
                 .as("Cart should have 1 item")
                 .isEqualTo(1);
         
-        assertThat(cartPage.isProductInCart(product1))
+        assertThat(cartPage.isProductInCart(TestData.PRODUCT_BACKPACK))
                 .as("Removed product should not be in cart")
                 .isFalse();
         
-        assertThat(cartPage.isProductInCart(product2))
+        assertThat(cartPage.isProductInCart(TestData.PRODUCT_BIKE_LIGHT))
                 .as("Other product should still be in cart")
                 .isTrue();
         
@@ -137,8 +130,8 @@ public class CartTest extends BaseTest {
         
         // Add products and navigate to cart
         inventoryPage
-                .addProductToCart("Sauce Labs Backpack")
-                .addProductToCart("Sauce Labs Bike Light");
+                .addProductToCart(TestData.PRODUCT_BACKPACK)
+                .addProductToCart(TestData.PRODUCT_BIKE_LIGHT);
         CartPage cartPage = inventoryPage.openCart();
         
         // Remove all items

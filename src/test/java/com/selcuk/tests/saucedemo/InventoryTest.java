@@ -6,6 +6,7 @@ import com.selcuk.projectPages.saucedemo.InventoryPage;
 import com.selcuk.projectPages.saucedemo.LoginPage;
 import com.selcuk.projectPages.saucedemo.ProductDetailPage;
 import com.selcuk.tests.BaseTest;
+import com.selcuk.tests.TestData;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeMethod;
@@ -160,10 +161,8 @@ public class InventoryTest extends BaseTest {
     public void testAddSpecificProductToCart() {
         log.info("Starting add specific product to cart test");
         
-        String productName = "Sauce Labs Backpack";
-        
         // Add specific product
-        inventoryPage.addProductToCart(productName);
+        inventoryPage.addProductToCart(TestData.PRODUCT_BACKPACK);
         
         // Verify cart count
         assertThat(inventoryPage.getCartItemCount())
@@ -181,14 +180,12 @@ public class InventoryTest extends BaseTest {
     public void testRemoveProductFromCart() {
         log.info("Starting remove product from cart test");
         
-        String productName = "Sauce Labs Backpack";
-        
         // Add product first
-        inventoryPage.addProductToCart(productName);
+        inventoryPage.addProductToCart(TestData.PRODUCT_BACKPACK);
         assertThat(inventoryPage.getCartItemCount()).isEqualTo(1);
         
         // Remove product
-        inventoryPage.removeProductFromCart(productName);
+        inventoryPage.removeProductFromCart(TestData.PRODUCT_BACKPACK);
         
         // Verify cart is empty
         assertThat(inventoryPage.isCartBadgeVisible())
@@ -206,10 +203,8 @@ public class InventoryTest extends BaseTest {
     public void testNavigateToProductDetail() {
         log.info("Starting navigate to product detail test");
         
-        String productName = "Sauce Labs Backpack";
-        
         // Navigate to product detail
-        ProductDetailPage detailPage = inventoryPage.openProductDetails(productName);
+        ProductDetailPage detailPage = inventoryPage.openProductDetails(TestData.PRODUCT_BACKPACK);
         
         // Verify on detail page
         assertThat(detailPage.isOnProductDetailPage())
@@ -218,7 +213,7 @@ public class InventoryTest extends BaseTest {
         
         assertThat(detailPage.getProductName())
                 .as("Product name should match")
-                .isEqualTo(productName);
+                .isEqualTo(TestData.PRODUCT_BACKPACK);
         
         log.info("Navigate to product detail test completed");
     }
@@ -233,9 +228,9 @@ public class InventoryTest extends BaseTest {
         
         // Add multiple products
         inventoryPage
-                .addProductToCart("Sauce Labs Backpack")
-                .addProductToCart("Sauce Labs Bike Light")
-                .addProductToCart("Sauce Labs Bolt T-Shirt");
+                .addProductToCart(TestData.PRODUCT_BACKPACK)
+                .addProductToCart(TestData.PRODUCT_BIKE_LIGHT)
+                .addProductToCart(TestData.PRODUCT_BOLT_TSHIRT);
         
         // Verify cart count
         assertThat(inventoryPage.getCartItemCount())

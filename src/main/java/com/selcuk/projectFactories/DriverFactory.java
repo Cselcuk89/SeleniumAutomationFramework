@@ -28,11 +28,23 @@ public final class DriverFactory {
         // Utility class - prevent instantiation
     }
     
+    // Default to headless mode but can be overridden
+    private static boolean headless = true;
+    
     private static final Map<String, Supplier<WebDriver>> LOCAL_DRIVERS = new HashMap<>();
     
     static {
         LOCAL_DRIVERS.put("chrome", DriverFactory::createChromeDriver);
         LOCAL_DRIVERS.put("firefox", DriverFactory::createFirefoxDriver);
+    }
+    
+    /**
+     * Sets whether to run in headless mode.
+     *
+     * @param isHeadless true for headless mode
+     */
+    public static void setHeadless(boolean isHeadless) {
+        headless = isHeadless;
     }
     
     /**
@@ -45,7 +57,7 @@ public final class DriverFactory {
      */
     public static WebDriver getDriver(String browser, String version) throws MalformedURLException {
         String runmode = PropertyUtils.get(ConfigProperties.RUNMODE);
-        log.info("Creating {} driver in {} mode", browser, runmode);
+        log.info("Creating {} driver in {} mode (headless: {})", browser, runmode, headless);
         
         if (runmode.equalsIgnoreCase("remote")) {
             return createRemoteDriver(browser, version);
@@ -62,7 +74,7 @@ public final class DriverFactory {
         
         switch (browser.toLowerCase()) {
             case "firefox":
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                FirefoxOptions firefoxOptions = getFirefoxOptions();
                 firefoxOptions.setBrowserVersion(version);
                 return new RemoteWebDriver(gridUrl, firefoxOptions);
             case "chrome":
@@ -93,16 +105,24 @@ public final class DriverFactory {
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless=new");
-        options.addArguments("--window-size=1920,1080");
+        
+        if (headless) {
+            options.addArguments("--headless=new");
+            options.addArguments("--window-size=1920,1080");
+        }
+        
         return options;
     }
     
     private static FirefoxOptions getFirefoxOptions() {
         FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("-headless");
-        options.addArguments("--width=1920");
-        options.addArguments("--height=1080");
+        
+        if (headless) {
+            options.addArguments("-headless");
+            options.addArguments("--width=1920");
+            options.addArguments("--height=1080");
+        }
+        
         return options;
     }
 }
