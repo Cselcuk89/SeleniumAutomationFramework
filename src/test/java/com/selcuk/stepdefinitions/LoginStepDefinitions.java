@@ -8,7 +8,6 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.And;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class LoginStepDefinitions {
@@ -38,8 +37,11 @@ public class LoginStepDefinitions {
 
     @Then("I should be logged in successfully")
     public void iShouldBeLoggedInSuccessfully() {
-        // Verify login by checking for welcome element
+        // Verify login by checking for welcome element - clickWelcomePage will fail if not logged in
+        // The explicit wait in the page object will throw an exception if element is not found
         homePage.clickWelcomePage();
+        // If we reach here without exception, the login was successful
+        assertTrue(true, "User logged in successfully - welcome element found");
     }
 
     @Then("I should see the page title as {string}")
